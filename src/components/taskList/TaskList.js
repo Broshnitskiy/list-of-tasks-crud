@@ -48,6 +48,9 @@ const TaskList = ({ filter }) => {
     <p>No saved tasks</p>
   ) : (
     <>
+      <h2 style={{ textAlign: "center" }}>
+        Total tasks: {renderTasks.length}{" "}
+      </h2>
       <ul>
         {renderTasks.map((task) => (
           <TaskItem key={task.id} task={task} handleShow={handleShow} />

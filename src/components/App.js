@@ -41,8 +41,6 @@ function App() {
         <div className={styles.headWrapper}>
           <h1 className={styles.title}>Task List</h1>
 
-          {allTasks && <h2>Total tasks: {allTasks.length} </h2>}
-
           <Button variant="primary" onClick={handleShowModal}>
             + ADD NEW TASK +
           </Button>
