@@ -1,11 +1,19 @@
-// import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../redux/tasksSlice";
 import ListGroup from "react-bootstrap/ListGroup";
-// import Button from "react-bootstrap/Button";
+import Button from "react-bootstrap/Button";
+import toast from "react-hot-toast";
 import styles from "./TaskItem.module.scss";
-// import { ModalComponent } from "../modal/Modal";
 
-const TaskItem = ({ task }) => {
-  const { name, description, status } = task;
+const TaskItem = ({ task, handleShow }) => {
+  const { id, name, description, status } = task;
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteTask(id));
+    toast.success(`Task was deleted successfully`);
+  };
+
   return (
     <li className={styles.taskItem}>
       <ListGroup horizontal as="ul">
@@ -13,31 +21,30 @@ const TaskItem = ({ task }) => {
           <strong>Name:</strong>
           <p>{name}</p>
         </ListGroup.Item>
+
         <ListGroup.Item variant="info" as="li">
           <strong>Description:</strong>
           <p>{description}</p>
         </ListGroup.Item>
-        {/* <ListGroup.Item variant="info" as="li">
-          Created:
-          <p>{email}</p>
-        </ListGroup.Item> */}
+
         <ListGroup.Item variant="info" as="li">
           <strong>Status:</strong>
           <p>{status}</p>
         </ListGroup.Item>
-        {/* <Button variant="warning" onClick={handleDelete}>
+
+        <Button variant="danger" onClick={handleDelete}>
           Delete
         </Button>
-        <Button variant="info" onClick={handleShow}>
-          Edit
-        </Button> */}
+
+        <Button
+          variant="primary"
+          onClick={() => {
+            handleShow(task);
+          }}
+        >
+          Edit task
+        </Button>
       </ListGroup>
-      {/* <ModalComponent
-        show={show}
-        handleClose={handleClose}
-        onSubmit={onSubmit}
-        user={user}
-      /> */}
     </li>
   );
 };

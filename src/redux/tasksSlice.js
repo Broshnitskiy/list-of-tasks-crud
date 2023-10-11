@@ -5,26 +5,26 @@ const initialState = [
     id: "id-1",
     name: "Create basic template",
     description: "Create the foundational layout of the application",
-    status: "сompleted",
+    status: "Completed",
   },
   {
     id: "id-2",
     name: "Add components",
     description: "Incorporate necessary components into the application",
-    status: "сompleted",
+    status: "Not completed",
   },
   {
     id: "id-3",
     name: "Check status",
     description: "Verify and set the task statuses",
-    status: "сompleted",
+    status: "Completed",
   },
   {
     id: "id-4",
     name: "fix components",
     description:
       "Address errors and deficiencies in the application components",
-    status: "сompleted",
+    status: "Not completed",
   },
 ];
 
@@ -49,17 +49,9 @@ export const tasksSlice = createSlice({
       state = state.filter((task) => task.id !== action.payload);
       return state;
     },
-
-    toggleTaskStatus: (state, action) => {
-      const taskToToggle = state.find((task) => task.id === action.payload);
-      if (taskToToggle) {
-        taskToToggle.status = !taskToToggle.status;
-      }
-    },
   },
 });
 
-export const { addTask, editTask, deleteTask, toggleTaskStatus } =
-  tasksSlice.actions;
+export const { addTask, editTask, deleteTask } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

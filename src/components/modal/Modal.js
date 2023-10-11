@@ -3,15 +3,24 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import FormComponent from "../form/Form";
 
-function ModalComponent({ show, handleClose, onSubmit, task = {} }) {
+function ModalComponent({
+  show,
+  handleClose,
+  onSubmitTask,
+  type,
+  editingTask,
+}) {
   return (
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>{type}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormComponent onSubmitUser={onSubmit} task={task} />
+          <FormComponent
+            onSubmitTask={onSubmitTask}
+            editingTask={editingTask}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

@@ -1,99 +1,69 @@
-import { useState } from "react";
+// import { useState } from "react";
+import { nanoid } from "nanoid";
+import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const FormComponent = ({ onSubmitUser, task }) => {
-  // const [firstName, setFirstName] = useState(
-  //   user?.firstName ? user.firstName : ""
-  // );
-  // const [lastName, setLastName] = useState(user?.lastName ? user.lastName : "");
-  // const [number, setNumber] = useState(user?.number ? user.number : "");
-  // const [email, setEmail] = useState(user?.email ? user.email : "");
-  // const [date, setDate] = useState(user?.date ? user.date : "");
+const FormComponent = ({ onSubmitTask, editingTask }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: editingTask ? editingTask.name : "",
+      description: editingTask ? editingTask.description : "",
+      status: editingTask ? editingTask.status : "Not completed",
+    },
+  });
 
-  // const resetInput = () => {
-  //   setFirstName("");
-  //   setLastName("");
-  //   setEmail("");
-  //   setNumber("");
-  //   setDate("");
-  // };
-
-  // const handleChange = (e) => {
-  //   switch (e.target.name) {
-  //     case "firstName":
-  //       setFirstName(e.target.value.trim());
-  //       break;
-  //     case "lastName":
-  //       setLastName(e.target.value.trim());
-  //       break;
-  //     case "number":
-  //       setNumber(e.target.value);
-  //       break;
-  //     case "email":
-  //       setEmail(e.target.value.toLocaleLowerCase().trim());
-  //       break;
-  //     case "date":
-  //       setDate(e.target.value);
-  //       break;
-
-  //     default:
-  //       return;
-  //   }
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   const newUser = {
-  //     firstName,
-  //     lastName,
-  //     number,
-  //     email,
-  //     date,
-  //   };
-
-  //   onSubmitUser(newUser, resetInput);
-  // };
+  const onSubmit = (data) => {
+    const newTask = {
+      id: nanoid(),
+      ...data,
+    };
+    onSubmitTask(newTask, reset);
+  };
 
   return (
-    <Form onSubmit={handleSubmit} autoComplete="off">
-      <Form.Group className="mb-3" controlId="formFirstName">
-        <Form.Label> First name</Form.Label>
+    <Form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <Form.Group className="mb-3" controlId="name">
+        <Form.Label>Task name</Form.Label>
         <Form.Control
           type="text"
-          name="newUserame"
-          value={name}
-          onChange={handleChange}
           placeholder="Task name"
-          pattern="^[A-Za-zА-Яа-я' -]+$"
           title="Name may contain only letters, apostrophe"
-          required
+          {...register("name", {
+            required: true,
+          })}
         />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formLastName">
-        <Form.Label>Last name</Form.Label>
-        <Form.Control
-          type="text"
-          name="description"
-          value={description}
-          onChange={handleChange}
-          placeholder="Description"
-          pattern="^[A-Za-zА-Яа-я' -]+$"
-          title="Name may contain only letters, apostrophe"
-          required
-        />
+        {errors.name && (
+          <span style={{ color: "red" }}>This field is required</span>
+        )}
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formDate">
-        <Form.Label>Your birthday</Form.Label>
+      <Form.Group className="mb-3" controlId="description">
+        <Form.Label>Description</Form.Label>
         <Form.Control
-          type="date"
-          name="date"
-          onChange={handleChange}
-          value={date}
-          required
+          type="text"
+          placeholder="Description"
+          title="Description may contain only letters, apostrophe"
+          {...register("description", {
+            required: true,
+          })}
         />
+        {errors.description && (
+          <span style={{ color: "red" }}>This field is required</span>
+        )}
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="status">
+        <Form.Label>Status</Form.Label>
+        <Form.Select {...register("status", { required: true })}>
+          <option value="Completed">Completed</option>
+          <option value="Not completed">Not completed</option>
+        </Form.Select>
       </Form.Group>
 
       <Button variant="primary" type="submit">
